@@ -1,19 +1,27 @@
 package com.example.subnetter.ui
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import com.example.subnetter.R
+
+@Composable
+fun getDrawableIcon(@DrawableRes id: Int): Painter {
+    return painterResource(id)
+}
 
 data class BottomNavigationItem(
     val label : String = "",
-    val icon : ImageVector = Icons.Default.Home,
+    val icon : Painter,
     val route : String = ""
-) {
-    fun bottomNavigationItems() : List<BottomNavigationItem> {
-        return listOf(
-            BottomNavigationItem("Calculator", Icons.Default.Home, "calculator"),
-            BottomNavigationItem("Training", Icons.Default.Home, "training"),
-            BottomNavigationItem("Table", Icons.Default.Home, "table")
-        )
-    }
+)
+
+@Composable
+fun bottomNavigationItems() : List<BottomNavigationItem> {
+    return listOf(
+        BottomNavigationItem("Calculator", getDrawableIcon(R.drawable.calculate), "calculator"),
+        BottomNavigationItem("Training", getDrawableIcon(R.drawable.router), "training"),
+        BottomNavigationItem("Table", getDrawableIcon(R.drawable.table_rows), "table")
+    )
 }

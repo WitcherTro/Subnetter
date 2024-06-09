@@ -32,7 +32,7 @@ fun BottomNavigationBar() {
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar {
-                BottomNavigationItem().bottomNavigationItems().forEachIndexed { _, navigationItem ->
+                bottomNavigationItems().forEachIndexed { _, navigationItem ->
                     NavigationBarItem(
                         selected = navigationItem.route == currentDestination?.route,
                         label = {
@@ -40,7 +40,7 @@ fun BottomNavigationBar() {
                         },
                         icon = {
                             Icon(
-                                navigationItem.icon,
+                                painter = navigationItem.icon,
                                 contentDescription = navigationItem.label
                             )
                         },
@@ -62,15 +62,15 @@ fun BottomNavigationBar() {
             navController = navController,
             startDestination = Screens.Calculator.route,
             modifier = Modifier.padding(paddingValues = paddingValues)) {
-                composable(Screens.Calculator.route) {
-                    CalculatorScreen(navController)
-                }
-                composable(Screens.Training.route) {
-                    TrainingScreen(navController)
-                }
-                composable(Screens.Table.route) {
-                    TableScreen(navController)
-                }
+            composable(Screens.Calculator.route) {
+                CalculatorScreen(navController)
+            }
+            composable(Screens.Training.route) {
+                TrainingScreen(navController)
+            }
+            composable(Screens.Table.route) {
+                TableScreen(navController)
             }
         }
+    }
 }
