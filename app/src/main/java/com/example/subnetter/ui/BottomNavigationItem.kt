@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.subnetter.R
 
 @Composable
@@ -20,8 +21,8 @@ data class BottomNavigationItem(
 @Composable
 fun bottomNavigationItems() : List<BottomNavigationItem> {
     return listOf(
-        BottomNavigationItem("Calculator", getDrawableIcon(R.drawable.calculate), "calculator"),
-        BottomNavigationItem("Training", getDrawableIcon(R.drawable.router), "training"),
-        BottomNavigationItem("Table", getDrawableIcon(R.drawable.table_rows), "table")
+        BottomNavigationItem(stringResource(R.string.menu_calculator), getDrawableIcon(R.drawable.calculate), "calculator"),
+        BottomNavigationItem(stringResource(R.string.menu_training), getDrawableIcon(R.drawable.router), "training"),
+        BottomNavigationItem(stringResource(R.string.menu_table), getDrawableIcon(R.drawable.table_rows), "table")
     )
 }
