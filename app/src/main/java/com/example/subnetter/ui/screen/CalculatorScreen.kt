@@ -101,8 +101,15 @@ fun CalculatorScreen(navController: NavController) {
                         value = listOf("0", "0", "0", "0")
                     )
                 }
-                // Number of Hosts
-                Text("Number of Hosts: 0", modifier = Modifier.padding(top = 10.dp))
+                Column(modifier = Modifier.padding(bottom = 10.dp)) {
+                    Text("Usable Host Range: 0")
+                }
+                Button(
+                    onClick = { /* Handle Calculate */ },
+                    modifier = Modifier.padding(top = 10.dp)
+                ) {
+                    Text("Calculate")
+                }
             }
         }
     }
