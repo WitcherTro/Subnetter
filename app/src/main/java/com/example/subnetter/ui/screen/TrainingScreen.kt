@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.subnetter.ui.IpAddressInput
+import com.example.subnetter.ui.IpAddressOutput
 import com.example.subnetter.ui.theme.SubnetterTheme
 
 @Composable
@@ -39,6 +40,10 @@ fun TrainingScreen(navController: NavController) {
                 ) { octets ->
 
                 }
+                IpAddressOutput(
+                    modifier = Modifier.padding(vertical = 20.dp),
+                    value = listOf("192", "168", "1", "1")
+                )
             }
         }
     }
