@@ -22,7 +22,7 @@ import com.example.subnetter.ui.IpAddressOutput
 import com.example.subnetter.ui.theme.SubnetterTheme
 
 @Composable
-fun CalculatorScreen(navController: NavController) {
+fun CalculatorScreen() {
     SubnetterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),

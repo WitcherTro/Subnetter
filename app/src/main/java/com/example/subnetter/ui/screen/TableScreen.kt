@@ -69,7 +69,7 @@ data class SubnetData(
     val usableHosts: String
 )
 @Composable
-fun TableScreen(navController: NavController) {
+fun TableScreen() {
     SubnetterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),

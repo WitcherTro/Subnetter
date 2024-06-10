@@ -63,13 +63,13 @@ fun BottomNavigationBar() {
             startDestination = Screens.Calculator.route,
             modifier = Modifier.padding(paddingValues = paddingValues)) {
             composable(Screens.Calculator.route) {
-                CalculatorScreen(navController)
+                CalculatorScreen()
             }
             composable(Screens.Training.route) {
-                TrainingScreen(navController)
+                TrainingScreen()
             }
             composable(Screens.Table.route) {
-                TableScreen(navController)
+                TableScreen()
             }
         }
     }
