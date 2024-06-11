@@ -16,8 +16,8 @@ fun handleCalculateClick(
     isValidSubnetMask: (List<String>) -> Boolean,
     calculateSubnet: (IpAddress, IpAddress) -> NetworkInformation
 ): NetworkInformation? {
-    // Check if the IP address is not null
-    if (ipAddress != null && ipAddress.size == 4) {
+    // Check if the IP address and subnet mask is not null
+    if (ipAddress != null && ipAddress.size == 4 && subnetMask != null && subnetMask.size == 4) {
         // Validate the IP address
         if (isValidIpAddress(ipAddress)) {
             val mask: IpAddress
