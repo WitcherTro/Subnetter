@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -14,19 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.colorResource
-import androidx.navigation.NavController
 import com.example.subnetter.R
+import com.example.subnetter.model.SubnetData
 import com.example.subnetter.ui.theme.SubnetterTheme
 
 @Composable
 fun SubnetTable() {
-    val data = listOf(
-        SubnetData("/24", "255.255.255.0", "254"),
-        SubnetData("/25", "255.255.255.128", "126"),
-        SubnetData("/26", "255.255.255.192", "62"),
-        // todo: change the data to be more dynamic later
-    )
-
+    val data = generateSubnetDataList()
     val textColor = colorResource(R.color.white)
     val headerColor = colorResource(R.color.dark_gray)
     val rowColors = listOf(
@@ -63,19 +59,24 @@ fun SubnetTable() {
     }
 }
 
-data class SubnetData(
-    val cidr: String,
-    val subnetMask: String,
-    val usableHosts: String
-)
 @Composable
 fun TableScreen() {
+    val scrollState = rememberScrollState()
+
     SubnetterTheme {
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
             color = MaterialTheme.colorScheme.background
         ) {
             SubnetTable()
         }
+    }
+}
+
+fun generateSubnetDataList(): List<SubnetData> {
+    return (0..30).mapNotNull { cidr ->
+        SubnetData.from(cidr)
     }
 }
