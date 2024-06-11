@@ -61,13 +61,11 @@ fun IpAddressOutput(
     value: List<String>,
     backgroundColor: Color = Color.Gray,
 ) {
-    val octets = remember { value.map { mutableStateOf(it) } }
-
     Row(modifier = modifier) {
-        for (i in octets.indices) {
+        for (i in value.indices) {
             Box(modifier = Modifier.background(backgroundColor), contentAlignment = Alignment.Center) {
                 BasicTextField(
-                    value = octets[i].value,
+                    value = value[i],
                     onValueChange = { },
                     readOnly = true,
                     modifier = Modifier.width(65.dp)
@@ -76,7 +74,7 @@ fun IpAddressOutput(
                     textStyle = TextStyle(textAlign = TextAlign.Center)
                 )
             }
-            if (i < octets.size - 1) {
+            if (i < value.size - 1) {
                 Text("⬤", modifier = Modifier.padding(horizontal = 4.dp).offset(y = 14.dp))
             }
         }
