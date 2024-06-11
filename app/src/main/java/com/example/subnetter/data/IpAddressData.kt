@@ -1,4 +1,4 @@
-package com.example.subnetter.model
+package com.example.subnetter.data
 
 /**
  * Data class representing an IP address.

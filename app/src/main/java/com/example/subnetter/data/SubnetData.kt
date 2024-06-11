@@ -1,4 +1,4 @@
-package com.example.subnetter.model
+package com.example.subnetter.data
 
 import kotlin.math.pow
 
@@ -24,7 +24,7 @@ data class SubnetData(
          * @param cidr The CIDR value to convert.
          * @return The SubnetData object representing the subnet data, or null if the CIDR value is invalid.
          */
-        fun from(cidr: Int): SubnetData? {
+        fun fromCidrToData(cidr: Int): SubnetData? {
             if (cidr !in 0..32) {
                 return null
             }
@@ -47,7 +47,7 @@ data class SubnetData(
          * @return The IpAddress object representing the subnet mask.
          */
         fun fromCidrToIp(cidr: Int): IpAddress {
-            from(cidr)?.let {
+            fromCidrToData(cidr)?.let {
                 val parts = it.subnetMask.split(".").map { it.toInt() }
                 return IpAddress(parts[0], parts[1], parts[2], parts[3])
             }

@@ -1,7 +1,7 @@
 package com.example.subnetter.util
 
-import com.example.subnetter.model.IpAddress
-import com.example.subnetter.model.NetworkInformation
+import com.example.subnetter.data.IpAddress
+import com.example.subnetter.data.NetworkInformation
 import kotlin.random.Random
 
 /**

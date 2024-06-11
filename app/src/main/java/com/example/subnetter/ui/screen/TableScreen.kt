@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.example.subnetter.R
-import com.example.subnetter.model.SubnetData
+import com.example.subnetter.data.SubnetData
 import com.example.subnetter.ui.theme.SubnetterTheme
 
 /**
@@ -94,6 +94,6 @@ fun TableScreen() {
  */
 fun generateSubnetDataList(): List<SubnetData> {
     return (0..30).mapNotNull { cidr ->
-        SubnetData.from(cidr)
+        SubnetData.fromCidrToData(cidr)
     }
 }

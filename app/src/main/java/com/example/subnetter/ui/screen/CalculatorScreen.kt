@@ -36,8 +36,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.subnetter.R
-import com.example.subnetter.model.IpAddress
-import com.example.subnetter.model.NetworkInformation
+import com.example.subnetter.data.IpAddress
+import com.example.subnetter.data.NetworkInformation
 import com.example.subnetter.ui.IpAddressInput
 import com.example.subnetter.ui.IpAddressOutput
 import com.example.subnetter.ui.theme.SubnetterTheme

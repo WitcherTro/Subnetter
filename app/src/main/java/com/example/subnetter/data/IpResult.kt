@@ -1,4 +1,4 @@
-package com.example.subnetter.model
+package com.example.subnetter.data
 
 import androidx.compose.ui.graphics.Color
 

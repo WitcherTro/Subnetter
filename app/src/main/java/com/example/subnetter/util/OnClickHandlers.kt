@@ -1,10 +1,10 @@
 package com.example.subnetter.util
 
 import androidx.compose.ui.graphics.Color
-import com.example.subnetter.model.IpAddress
-import com.example.subnetter.model.IpResult
-import com.example.subnetter.model.NetworkInformation
-import com.example.subnetter.model.SubnetData
+import com.example.subnetter.data.IpAddress
+import com.example.subnetter.data.IpResult
+import com.example.subnetter.data.NetworkInformation
+import com.example.subnetter.data.SubnetData
 
 /**
  * Handles the click event for the calculate button.
