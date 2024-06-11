@@ -2,6 +2,7 @@ package com.example.subnetter.util
 
 import com.example.subnetter.model.IpAddress
 import com.example.subnetter.model.NetworkInformation
+import kotlin.random.Random
 
 fun calculateSubnet(ipAddress: IpAddress, subnetMask: IpAddress): NetworkInformation {
     // Convert the IP address and subnet mask to binary
@@ -32,5 +33,25 @@ fun calculateSubnet(ipAddress: IpAddress, subnetMask: IpAddress): NetworkInforma
         firstUsableAddress = firstUsableAddress,
         lastUsableAddress = lastUsableAddress,
         numberOfHosts = numberOfHosts
+    )
+}
+
+fun generateRandomIpAddress(): IpAddress {
+    return IpAddress(
+        Random.nextInt(0, 256),
+        Random.nextInt(0, 256),
+        Random.nextInt(0, 256),
+        Random.nextInt(0, 256)
+    )
+}
+
+fun generateRandomSubnetMask(): IpAddress {
+    val prefix = Random.nextInt(1, 31)
+    val mask = IntArray(32) { if (it < prefix) 1 else 0 }
+    return IpAddress(
+        mask.sliceArray(0..7).joinToString("").toInt(2),
+        mask.sliceArray(8..15).joinToString("").toInt(2),
+        mask.sliceArray(16..23).joinToString("").toInt(2),
+        mask.sliceArray(24..31).joinToString("").toInt(2)
     )
 }
