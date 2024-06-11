@@ -14,7 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Snackbar
@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,8 +49,8 @@ import com.example.subnetter.util.isValidSubnetMask
 @Composable
 fun CalculatorScreen() {
     // Mutable state for the IP address and subnet mask
-    var ipAddress by remember { mutableStateOf(listOf("", "", "", "")) }
-    var subnetMask by remember { mutableStateOf(listOf("", "", "", "")) }
+    var ipAddress by rememberSaveable { mutableStateOf(listOf("", "", "", "")) }
+    var subnetMask by rememberSaveable { mutableStateOf(listOf("", "", "", "")) }
 
     // Mutable state for the subnet information
     var subnetInfo by remember { mutableStateOf(NetworkInformation(
@@ -71,8 +72,8 @@ fun CalculatorScreen() {
     var snackbarMessage by remember { mutableStateOf("") }
 
     // Mutable state for the CIDR notation
-    var isCIDR by remember { mutableStateOf(false) }
-    var cidrValue by remember { mutableFloatStateOf(0f) }
+    var isCIDR by rememberSaveable { mutableStateOf(false) }
+    var cidrValue by rememberSaveable { mutableFloatStateOf(0f) }
 
     // Scroll state for the column
     val scrollState = rememberScrollState()
@@ -152,7 +153,11 @@ fun CalculatorScreen() {
                     }
                 }
                 // Divider
-                Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 10.dp))
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    thickness = 1.dp,
+                    color = Color.Gray
+                )
                 // Network Address Output
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text(stringResource(R.string.network_address))
