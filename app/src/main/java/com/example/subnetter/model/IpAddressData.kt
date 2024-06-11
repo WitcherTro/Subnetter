@@ -14,8 +14,9 @@ data class IpAddress(val octet1: Int, val octet2: Int, val octet3: Int, val octe
             return IpAddress(octet1, octet2, octet3, octet4)
         }
     }
-}
 
-fun IpAddress.toList(): List<String> {
-    return listOf(octet1.toString(), octet2.toString(), octet3.toString(), octet4.toString())
+
+    fun toList(): List<String> {
+        return listOf(octet1.toString(), octet2.toString(), octet3.toString(), octet4.toString())
+    }
 }
