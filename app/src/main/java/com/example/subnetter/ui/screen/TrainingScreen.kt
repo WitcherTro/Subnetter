@@ -29,9 +29,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.subnetter.R
 import com.example.subnetter.model.SubnetData.Companion.fromCidrToIp
 import com.example.subnetter.ui.IpAddressInput
 import com.example.subnetter.ui.IpAddressOutput
@@ -99,7 +101,7 @@ fun TrainingScreen() {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Custom Mask")
+                    Text(stringResource(R.string.custom_mask))
                     Switch(
                         checked = isCustomMask,
                         onCheckedChange = { isCustomMask = it }
@@ -107,15 +109,17 @@ fun TrainingScreen() {
                 }
                 // IP Address Output
                 Column(modifier = Modifier.padding(bottom = 10.dp)) {
-                    Text("IP Address")
+                    Text(stringResource(R.string.ip_address))
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = ipAddress.toList()
                     )
                 }
                 // Subnet Mask Output or CIDR Slider
-                Column(modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth(0.83f)) {
-                    Text(if (isCustomMask) "CIDR Notation" else "Subnet Mask")
+                Column(modifier = Modifier
+                    .padding(bottom = 10.dp)
+                    .fillMaxWidth(0.83f)) {
+                    Text(if (isCustomMask) stringResource(R.string.cidr_notation) else stringResource(R.string.subnet_mask))
                     if (isCustomMask) {
                         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                             Text(
@@ -147,7 +151,7 @@ fun TrainingScreen() {
                 )
                 // Network Address Input
                 Column(modifier = Modifier.padding(bottom = 10.dp)) {
-                    Text("Network Address")
+                    Text(stringResource(R.string.network_address))
                     IpAddressInput(
                         modifier = Modifier
                             .padding(vertical = 5.dp)
@@ -158,7 +162,7 @@ fun TrainingScreen() {
                 }
                 // Broadcast Address Input
                 Column(modifier = Modifier.padding(bottom = 10.dp)) {
-                    Text("Broadcast Address")
+                    Text(stringResource(R.string.broadcast_address))
                     IpAddressInput(
                         modifier = Modifier
                             .padding(vertical = 5.dp)
@@ -169,7 +173,7 @@ fun TrainingScreen() {
                 }
                 // First Usable Address Input
                 Column(modifier = Modifier.padding(bottom = 10.dp)) {
-                    Text("First Usable Address")
+                    Text(stringResource(R.string.first_usable_address))
                     IpAddressInput(
                         modifier = Modifier
                             .padding(vertical = 5.dp)
@@ -180,7 +184,7 @@ fun TrainingScreen() {
                 }
                 // Last Usable Address Input
                 Column(modifier = Modifier.padding(bottom = 10.dp)) {
-                    Text("Last Usable Address")
+                    Text(stringResource(R.string.last_usable_address))
                     IpAddressInput(
                         modifier = Modifier
                             .padding(vertical = 5.dp)
@@ -210,7 +214,7 @@ fun TrainingScreen() {
                             lastUsableBorderColor = borderColorsList[3]
                         }
                     }) {
-                        Text("Validate")
+                        Text(stringResource(R.string.validate))
                     }
                     Button(onClick = {
                         if (isCustomMask) {
@@ -236,7 +240,7 @@ fun TrainingScreen() {
                             lastUsableBorderColor = borderColors[3]
                         }
                     }) {
-                        Text("Solve")
+                        Text(stringResource(R.string.solve))
                     }
                     Button(onClick = {
                         val result = handleGenerateNewIpClick()
@@ -254,7 +258,7 @@ fun TrainingScreen() {
 
                         networkInfo = calculateSubnet(ipAddress, subnetMask)
                     }) {
-                        Text("Generate New IP")
+                        Text(stringResource(R.string.generate_new_ip))
                     }
                 }
                 Spacer(modifier =  Modifier.height(48.dp))
