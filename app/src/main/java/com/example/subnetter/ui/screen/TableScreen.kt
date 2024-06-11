@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import com.example.subnetter.R
 import com.example.subnetter.model.SubnetData
 import com.example.subnetter.ui.theme.SubnetterTheme
@@ -38,9 +39,9 @@ fun SubnetTable() {
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(text = "CIDR", modifier = Modifier.weight(0.5f), color = textColor)
-            Text(text = "Subnet Mask", modifier = Modifier.weight(1f), color = textColor)
-            Text(text = "Usable Hosts", modifier = Modifier.weight(1f), color = textColor)
+            Text(text = stringResource(R.string.cidr), modifier = Modifier.weight(0.5f), color = textColor)
+            Text(text = stringResource(R.string.subnet_mask), modifier = Modifier.weight(1f), color = textColor)
+            Text(text = stringResource(R.string.usable_hosts), modifier = Modifier.weight(1f), color = textColor)
         }
 
         data.forEachIndexed { index, item ->

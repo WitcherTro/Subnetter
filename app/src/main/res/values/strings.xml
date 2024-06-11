@@ -16,4 +16,5 @@
     <string name="invalid_ip_address_or_subnet_mask">Invalid IP address or subnet mask.</string>
     <string name="calculate">Calculate</string>
     <string name="dismiss">Dismiss</string>
+    <string name="usable_hosts">Usable Hosts</string>
 </resources>
