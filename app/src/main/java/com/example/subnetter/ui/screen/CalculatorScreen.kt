@@ -84,14 +84,16 @@ fun CalculatorScreen() {
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text(stringResource(R.string.ip_address))
                     IpAddressInput(
-                        modifier = Modifier.padding(vertical = 5.dp)
-                    ) { octets ->
-                        ipAddress = if (octets.all { it.toIntOrNull() != null }) {
-                            IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
-                        } else {
-                            null
+                        modifier = Modifier.padding(vertical = 5.dp),
+                        value = ipAddress?.toList() ?: listOf("", "", "", ""),
+                        onValueChange = { octets ->
+                            ipAddress = if (octets.all { it.toIntOrNull() != null }) {
+                                IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
+                            } else {
+                                null
+                            }
                         }
-                    }
+                    )
                 }
                 // Subnet Mask Input
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
@@ -118,14 +120,16 @@ fun CalculatorScreen() {
                     } else {
                         Text(stringResource(R.string.subnet_mask))
                         IpAddressInput(
-                            modifier = Modifier.padding(vertical = 5.dp)
-                        ) { octets ->
-                            subnetMask = if (octets.all { it.toIntOrNull() != null }) {
-                                IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
-                            } else {
-                                null
+                            modifier = Modifier.padding(vertical = 5.dp),
+                            value = subnetMask?.toList() ?: listOf("", "", "", ""),
+                            onValueChange = { octets ->
+                                subnetMask = if (octets.all { it.toIntOrNull() != null }) {
+                                    IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
+                                } else {
+                                    null
+                                }
                             }
-                        }
+                        )
                     }
                 }
                 // Mask Notation Buttons

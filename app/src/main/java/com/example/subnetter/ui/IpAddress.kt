@@ -1,5 +1,6 @@
 package com.example.subnetter.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -11,8 +12,8 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,22 +23,24 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun IpAddressInput(
     modifier: Modifier = Modifier,
+    value: List<String>,
     onValueChange: (List<String>) -> Unit,
 ) {
-    val octets = remember { List(4) { mutableStateOf("") } }
+    val octets = derivedStateOf { value.map { mutableStateOf(it) } }
 
     Row(modifier = modifier) {
-        for (i in octets.indices) {
+        for (i in octets.value.indices) {
             Box(modifier = Modifier.background(Color.LightGray)){
                 BasicTextField(
-                    value = octets[i].value,
+                    value = octets.value[i].value,
                     onValueChange = { newValue: String ->
                         if (newValue.isEmpty() || newValue.toIntOrNull() in 0..255) {
-                            octets[i].value = newValue
-                            onValueChange(octets.map { it.value })
+                            octets.value[i].value = newValue
+                            onValueChange(octets.value.map { it.value })
                         }
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
@@ -48,7 +51,7 @@ fun IpAddressInput(
                     textStyle = TextStyle(textAlign = TextAlign.Center)
                 )
             }
-            if (i < octets.size - 1) {
+            if (i < octets.value.size - 1) {
                 Text("⬤", modifier = Modifier.padding(horizontal = 4.dp).offset(y = 14.dp))
             }
         }
