@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.subnetter.model.IpAddress
 import com.example.subnetter.model.NetworkInformation
-import com.example.subnetter.model.toList
 import com.example.subnetter.ui.IpAddressInput
 import com.example.subnetter.ui.IpAddressOutput
 import com.example.subnetter.ui.theme.SubnetterTheme
@@ -33,6 +32,7 @@ import com.example.subnetter.util.handleCIDRClick
 import com.example.subnetter.util.handleDecimalClick
 import com.example.subnetter.util.handleWildcardClick
 import com.example.subnetter.util.isValidIpAddress
+import com.example.subnetter.util.isValidSubnetMask
 
 @Composable
 fun CalculatorScreen() {
@@ -147,7 +147,7 @@ fun CalculatorScreen() {
                 Button(
                     onClick = {
                         // Validate the IP address and subnet mask
-                        if (isValidIpAddress(ipAddress) && isValidIpAddress(subnetMask)) {
+                        if (isValidIpAddress(ipAddress) && isValidSubnetMask(subnetMask)) {
                             // Calculate the subnet information and update the state
                             subnetInfo = calculateSubnet(ipAddress, subnetMask)
                         } else {
