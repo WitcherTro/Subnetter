@@ -2,6 +2,7 @@ package com.example.subnetter.ui.screen
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +28,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.subnetter.model.SubnetData.Companion.fromCidrToIp
 import com.example.subnetter.ui.IpAddressInput
 import com.example.subnetter.ui.IpAddressOutput
 import com.example.subnetter.ui.theme.SubnetterTheme
@@ -33,7 +39,9 @@ import com.example.subnetter.util.calculateSubnet
 import com.example.subnetter.util.generateRandomIpAddress
 import com.example.subnetter.util.generateRandomSubnetMask
 import com.example.subnetter.util.handleGenerateNewIpClick
+import com.example.subnetter.util.handleSolveCidrClick
 import com.example.subnetter.util.handleSolveClick
+import com.example.subnetter.util.handleValidateCidrClick
 import com.example.subnetter.util.handleValidateClick
 
 @Composable
@@ -41,6 +49,10 @@ fun TrainingScreen() {
     // Mutable state for the IP address and subnet mask
     var ipAddress by remember { mutableStateOf(generateRandomIpAddress()) }
     var subnetMask by remember { mutableStateOf(generateRandomSubnetMask()) }
+
+    // Mutable state for the switch state and CIDR value
+    var isCustomMask by remember { mutableStateOf(false) }
+    var cidrValue by remember { mutableStateOf(24f) }
 
     // Mutable state for the user's input
     var networkInput by remember { mutableStateOf(listOf("", "", "", "")) }
@@ -73,6 +85,18 @@ fun TrainingScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                // Custom Mask Switch
+                Row(
+                    modifier = Modifier.fillMaxWidth(0.83f),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Custom Mask")
+                    Switch(
+                        checked = isCustomMask,
+                        onCheckedChange = { isCustomMask = it }
+                    )
+                }
                 // IP Address Output
                 Column(modifier = Modifier.padding(bottom = 10.dp)) {
                     Text("IP Address")
@@ -81,16 +105,38 @@ fun TrainingScreen() {
                         value = ipAddress.toList()
                     )
                 }
-                // Subnet Mask Output
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
-                    Text("Subnet Mask")
-                    IpAddressOutput(
-                        modifier = Modifier.padding(vertical = 5.dp),
-                        value = subnetMask.toList()
-                    )
+                // Subnet Mask Output or CIDR Slider
+                Column(modifier = Modifier.padding(bottom = 10.dp).fillMaxWidth(0.83f)) {
+                    Text(if (isCustomMask) "CIDR Notation" else "Subnet Mask")
+                    if (isCustomMask) {
+                        Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                            Text(
+                                text = "/${cidrValue.toInt()}",
+                                fontSize = 24.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        Slider(
+                            value = cidrValue,
+                            onValueChange = { cidrValue = it },
+                            valueRange = 0f..30f,
+                            steps = 30
+                        )
+                        subnetMask = fromCidrToIp(cidrValue.toInt())
+                    } else {
+                        IpAddressOutput(
+                            modifier = Modifier.padding(vertical = 5.dp),
+                            value = subnetMask.toList()
+                        )
+                    }
                 }
                 // Divider
-                Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 10.dp))
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    thickness = 1.dp,
+                    color = Color.Gray
+                )
                 // Network Address Input
                 Column(modifier = Modifier.padding(bottom = 10.dp)) {
                     Text("Network Address")
@@ -136,29 +182,52 @@ fun TrainingScreen() {
                     )
                 }
                 // Validate, Solve and Generate New IP Buttons
+                // Validate, Solve and Generate New IP Buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(onClick = {
-                        val borderColorsList = handleValidateClick(networkInput, broadcastInput, firstUsableInput, lastUsableInput, networkInfo)
-                        networkBorderColor = borderColorsList[0]
-                        broadcastBorderColor = borderColorsList[1]
-                        firstUsableBorderColor = borderColorsList[2]
-                        lastUsableBorderColor = borderColorsList[3]
+                        if (isCustomMask) {
+                            val networkInformation = calculateSubnet(ipAddress, fromCidrToIp(cidrValue.toInt()))
+                            val borderColorsList = handleValidateCidrClick(networkInput, broadcastInput, firstUsableInput, lastUsableInput, networkInformation)
+                            networkBorderColor = borderColorsList[0]
+                            broadcastBorderColor = borderColorsList[1]
+                            firstUsableBorderColor = borderColorsList[2]
+                            lastUsableBorderColor = borderColorsList[3]
+                        } else {
+                            val borderColorsList = handleValidateClick(networkInput, broadcastInput, firstUsableInput, lastUsableInput, networkInfo)
+                            networkBorderColor = borderColorsList[0]
+                            broadcastBorderColor = borderColorsList[1]
+                            firstUsableBorderColor = borderColorsList[2]
+                            lastUsableBorderColor = borderColorsList[3]
+                        }
                     }) {
                         Text("Validate")
                     }
                     Button(onClick = {
-                        val (inputs, borderColors) = handleSolveClick(networkInfo)
-                        networkInput = inputs[0]
-                        broadcastInput = inputs[1]
-                        firstUsableInput = inputs[2]
-                        lastUsableInput = inputs[3]
-                        networkBorderColor = borderColors[0]
-                        broadcastBorderColor = borderColors[1]
-                        firstUsableBorderColor = borderColors[2]
-                        lastUsableBorderColor = borderColors[3]
+                        if (isCustomMask) {
+                            val networkInformation = calculateSubnet(ipAddress, fromCidrToIp(cidrValue.toInt()))
+                            val (inputs, borderColors) = handleSolveCidrClick(networkInformation)
+                            networkInput = inputs[0]
+                            broadcastInput = inputs[1]
+                            firstUsableInput = inputs[2]
+                            lastUsableInput = inputs[3]
+                            networkBorderColor = borderColors[0]
+                            broadcastBorderColor = borderColors[1]
+                            firstUsableBorderColor = borderColors[2]
+                            lastUsableBorderColor = borderColors[3]
+                        } else {
+                            val (inputs, borderColors) = handleSolveClick(networkInfo)
+                            networkInput = inputs[0]
+                            broadcastInput = inputs[1]
+                            firstUsableInput = inputs[2]
+                            lastUsableInput = inputs[3]
+                            networkBorderColor = borderColors[0]
+                            broadcastBorderColor = borderColors[1]
+                            firstUsableBorderColor = borderColors[2]
+                            lastUsableBorderColor = borderColors[3]
+                        }
                     }) {
                         Text("Solve")
                     }

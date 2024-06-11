@@ -95,3 +95,35 @@ fun handleGenerateNewIpClick(): IpResult {
         listOf(networkBorderColor, broadcastBorderColor, firstUsableBorderColor, lastUsableBorderColor)
     )
 }
+
+fun handleValidateCidrClick(
+    networkInput: List<String>,
+    broadcastInput: List<String>,
+    firstUsableInput: List<String>,
+    lastUsableInput: List<String>,
+    networkInformation: NetworkInformation): List<Color> {
+    val networkBorderColor = if (networkInput == networkInformation.networkAddress.toList()) Color.Green else Color.Red
+    val broadcastBorderColor = if (broadcastInput == networkInformation.broadcastAddress.toList()) Color.Green else Color.Red
+    val firstUsableBorderColor = if (firstUsableInput == networkInformation.firstUsableAddress.toList()) Color.Green else Color.Red
+    val lastUsableBorderColor = if (lastUsableInput == networkInformation.lastUsableAddress.toList()) Color.Green else Color.Red
+
+    return listOf(networkBorderColor, broadcastBorderColor, firstUsableBorderColor, lastUsableBorderColor)
+}
+
+fun handleSolveCidrClick(
+    networkInformation: NetworkInformation): Pair<List<List<String>>, List<Color>> {
+    val networkInput = networkInformation.networkAddress.toList()
+    val broadcastInput = networkInformation.broadcastAddress.toList()
+    val firstUsableInput = networkInformation.firstUsableAddress.toList()
+    val lastUsableInput = networkInformation.lastUsableAddress.toList()
+
+    val networkBorderColor = Color.Green
+    val broadcastBorderColor = Color.Green
+    val firstUsableBorderColor = Color.Green
+    val lastUsableBorderColor = Color.Green
+
+    return Pair(
+        listOf(networkInput, broadcastInput, firstUsableInput, lastUsableInput),
+        listOf(networkBorderColor, broadcastBorderColor, firstUsableBorderColor, lastUsableBorderColor)
+    )
+}
