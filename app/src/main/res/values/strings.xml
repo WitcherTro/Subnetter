@@ -3,4 +3,17 @@
     <string name="menu_calculator">Calculator</string>
     <string name="menu_training">Training</string>
     <string name="menu_table">Table</string>
+    <string name="ip_address">IP Address</string>
+    <string name="cidr_notation">CIDR Notation</string>
+    <string name="subnet_mask">Subnet Mask</string>
+    <string name="decimal">Decimal</string>
+    <string name="cidr">CIDR</string>
+    <string name="network_address">Network Address</string>
+    <string name="broadcast_address">Broadcast Address</string>
+    <string name="first_usable_address">First Usable Address</string>
+    <string name="last_usable_address">Last Usable Address</string>
+    <string name="usable_host_range">Usable Host Range: %1$s</string>
+    <string name="invalid_ip_address_or_subnet_mask">Invalid IP address or subnet mask.</string>
+    <string name="calculate">Calculate</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

@@ -24,12 +24,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.subnetter.R
 import com.example.subnetter.model.IpAddress
 import com.example.subnetter.model.NetworkInformation
-import com.example.subnetter.model.SubnetData
 import com.example.subnetter.ui.IpAddressInput
 import com.example.subnetter.ui.IpAddressOutput
 import com.example.subnetter.ui.theme.SubnetterTheme
@@ -80,7 +81,7 @@ fun CalculatorScreen() {
             ) {
                 // IP Address Input
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
-                    Text("IP Address")
+                    Text(stringResource(R.string.ip_address))
                     IpAddressInput(
                         modifier = Modifier.padding(vertical = 5.dp)
                     ) { octets ->
@@ -94,7 +95,7 @@ fun CalculatorScreen() {
                 // Subnet Mask Input
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     if (isCIDR) {
-                        Text("CIDR Notation", modifier = Modifier.align(Alignment.CenterHorizontally))
+                        Text(stringResource(R.string.cidr_notation), modifier = Modifier.align(Alignment.CenterHorizontally))
                         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                             Text(
                                 text = "/${cidrValue.toInt()}",
@@ -114,7 +115,7 @@ fun CalculatorScreen() {
                         )
 
                     } else {
-                        Text("Subnet Mask")
+                        Text(stringResource(R.string.subnet_mask))
                         IpAddressInput(
                             modifier = Modifier.padding(vertical = 5.dp)
                         ) { octets ->
@@ -135,20 +136,20 @@ fun CalculatorScreen() {
                         onClick = { isCIDR = false },
                         colors = ButtonDefaults.buttonColors(containerColor = if (!isCIDR) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.primary)
                     ) {
-                        Text("Decimal")
+                        Text(stringResource(R.string.decimal))
                     }
                     Button(
                         onClick = { isCIDR = true },
                         colors = ButtonDefaults.buttonColors(containerColor = if (isCIDR) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.primary)
                     ) {
-                        Text("CIDR")
+                        Text(stringResource(R.string.cidr))
                     }
                 }
                 // Divider
                 Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 10.dp))
                 // Network Address Output
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
-                    Text("Network Address")
+                    Text(stringResource(R.string.network_address))
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = networkAddress
@@ -156,7 +157,7 @@ fun CalculatorScreen() {
                 }
                 // Broadcast Address Output
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
-                    Text("Broadcast Address")
+                    Text(stringResource(R.string.broadcast_address))
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = broadcastAddress
@@ -164,7 +165,7 @@ fun CalculatorScreen() {
                 }
                 // First Usable Address Output
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
-                    Text("First Usable Address")
+                    Text(stringResource(R.string.first_usable_address))
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = firstUsableAddress
@@ -172,14 +173,14 @@ fun CalculatorScreen() {
                 }
                 // Last Usable Address Output
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
-                    Text("Last Usable Address")
+                    Text(stringResource(R.string.last_usable_address))
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = lastUsableAddress
                     )
                 }
                 Column(modifier = Modifier.padding(bottom = 5.dp)) {
-                    Text("Usable Host Range: ${subnetInfo.numberOfHosts}")
+                    Text(stringResource(R.string.usable_host_range, subnetInfo.numberOfHosts))
                 }
                 Button(
                     onClick = {
@@ -195,20 +196,20 @@ fun CalculatorScreen() {
                         if (result != null) {
                             subnetInfo = result
                         } else {
-                            snackbarMessage = "Invalid IP address or subnet mask."
+                            snackbarMessage = R.string.invalid_ip_address_or_subnet_mask.toString()
                             snackbarVisible = true
                         }
                     },
                     modifier = Modifier.padding(top = 5.dp)
                 ) {
-                    Text("Calculate")
+                    Text(stringResource(R.string.calculate))
                 }
                 if (snackbarVisible) {
                     Snackbar(
                         modifier = Modifier.padding(16.dp),
                         action = {
                             TextButton(onClick = { snackbarVisible = false }) {
-                                Text("Dismiss")
+                                Text(stringResource(R.string.dismiss))
                             }
                         }
                     ) {
