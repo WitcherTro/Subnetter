@@ -24,7 +24,7 @@ fun calculateSubnet(ipAddress: IpAddress, subnetMask: IpAddress): NetworkInforma
 
     // The number of hosts is 2^(32 - subnet bits) - 2
     val subnetBits = Integer.bitCount(maskBinary)
-    val numberOfHosts = Math.pow(2.0, (32 - subnetBits).toDouble()).toInt() - 2
+    val numberOfHosts = Math.pow(2.0, (32 - subnetBits).toDouble()).toLong() - 2
 
     return NetworkInformation(
         networkAddress = networkAddress,

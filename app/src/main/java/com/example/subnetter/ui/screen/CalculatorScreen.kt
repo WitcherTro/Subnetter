@@ -1,14 +1,17 @@
 package com.example.subnetter.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,24 +24,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.subnetter.model.IpAddress
 import com.example.subnetter.model.NetworkInformation
+import com.example.subnetter.model.SubnetData
 import com.example.subnetter.ui.IpAddressInput
 import com.example.subnetter.ui.IpAddressOutput
 import com.example.subnetter.ui.theme.SubnetterTheme
 import com.example.subnetter.util.calculateSubnet
-import com.example.subnetter.util.handleCIDRClick
-import com.example.subnetter.util.handleDecimalClick
-import com.example.subnetter.util.handleWildcardClick
+import com.example.subnetter.util.handleCalculateClick
 import com.example.subnetter.util.isValidIpAddress
 import com.example.subnetter.util.isValidSubnetMask
 
 @Composable
 fun CalculatorScreen() {
     // Mutable state for the IP address and subnet mask
-    var ipAddress by remember { mutableStateOf(IpAddress(0, 0, 0, 0)) }
-    var subnetMask by remember { mutableStateOf(IpAddress(0, 0, 0, 0)) }
+    var ipAddress by remember { mutableStateOf<IpAddress?>(null) }
+    var subnetMask by remember { mutableStateOf<IpAddress?>(null) }
 
     // Mutable state for the subnet information
     var subnetInfo by remember { mutableStateOf(NetworkInformation(
@@ -59,6 +63,10 @@ fun CalculatorScreen() {
     var snackbarVisible by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
 
+    // Mutable state for the CIDR notation
+    var isCIDR by remember { mutableStateOf(false) }
+    var cidrValue by remember { mutableStateOf(0f) }
+
     SubnetterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -71,24 +79,50 @@ fun CalculatorScreen() {
                 verticalArrangement = Arrangement.Center
             ) {
                 // IP Address Input
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
+                Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text("IP Address")
                     IpAddressInput(
                         modifier = Modifier.padding(vertical = 5.dp)
                     ) { octets ->
                         if (octets.all { it.toIntOrNull() != null }) {
                             ipAddress = IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
+                        } else {
+                            ipAddress = null
                         }
                     }
                 }
                 // Subnet Mask Input
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
-                    Text("Subnet Mask")
-                    IpAddressInput(
-                        modifier = Modifier.padding(vertical = 5.dp)
-                    ) { octets ->
-                        if (octets.all { it.toIntOrNull() != null }) {
-                            subnetMask = IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
+                Column(modifier = Modifier.padding(bottom = 5.dp)) {
+                    if (isCIDR) {
+                        Text("CIDR Notation", modifier = Modifier.align(Alignment.CenterHorizontally))
+                        Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                            Text(
+                                text = "/${cidrValue.toInt()}",
+                                fontSize = 24.sp,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        Slider(
+                            value = cidrValue,
+                            onValueChange = { cidrValue = it },
+                            valueRange = 0f..30f,
+                            steps = 30,
+                            modifier = Modifier
+                                .fillMaxWidth(0.83f)
+                                .align(Alignment.CenterHorizontally)
+                        )
+
+                    } else {
+                        Text("Subnet Mask")
+                        IpAddressInput(
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        ) { octets ->
+                            if (octets.all { it.toIntOrNull() != null }) {
+                                subnetMask = IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
+                            } else {
+                                subnetMask = null
+                            }
                         }
                     }
                 }
@@ -97,66 +131,75 @@ fun CalculatorScreen() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Button(onClick = { handleDecimalClick() }) {
+                    Button(
+                        onClick = { isCIDR = false },
+                        colors = ButtonDefaults.buttonColors(containerColor = if (!isCIDR) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.primary)
+                    ) {
                         Text("Decimal")
                     }
-                    Button(onClick = { handleWildcardClick() }) {
-                        Text("Wildcard")
-                    }
-                    Button(onClick = { handleCIDRClick() }) {
+                    Button(
+                        onClick = { isCIDR = true },
+                        colors = ButtonDefaults.buttonColors(containerColor = if (isCIDR) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.primary)
+                    ) {
                         Text("CIDR")
                     }
                 }
                 // Divider
                 Divider(color = Color.Gray, thickness = 1.dp, modifier = Modifier.padding(vertical = 10.dp))
                 // Network Address Output
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
+                Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text("Network Address")
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = networkAddress
                     )
                 }
-// Broadcast Address Output
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
+                // Broadcast Address Output
+                Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text("Broadcast Address")
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = broadcastAddress
                     )
                 }
-// First Usable Address Output
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
+                // First Usable Address Output
+                Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text("First Usable Address")
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = firstUsableAddress
                     )
                 }
-// Last Usable Address Output
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
+                // Last Usable Address Output
+                Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text("Last Usable Address")
                     IpAddressOutput(
                         modifier = Modifier.padding(vertical = 5.dp),
                         value = lastUsableAddress
                     )
                 }
-                Column(modifier = Modifier.padding(bottom = 10.dp)) {
+                Column(modifier = Modifier.padding(bottom = 5.dp)) {
                     Text("Usable Host Range: ${subnetInfo.numberOfHosts}")
                 }
                 Button(
                     onClick = {
-                        // Validate the IP address and subnet mask
-                        if (isValidIpAddress(ipAddress) && isValidSubnetMask(subnetMask)) {
-                            // Calculate the subnet information and update the state
-                            subnetInfo = calculateSubnet(ipAddress, subnetMask)
+                        val result = handleCalculateClick(
+                            ipAddress,
+                            subnetMask,
+                            isCIDR,
+                            cidrValue,
+                            ::isValidIpAddress,
+                            ::isValidSubnetMask,
+                            ::calculateSubnet
+                        )
+                        if (result != null) {
+                            subnetInfo = result
                         } else {
-                            // Show error message
                             snackbarMessage = "Invalid IP address or subnet mask."
                             snackbarVisible = true
                         }
                     },
-                    modifier = Modifier.padding(top = 10.dp)
+                    modifier = Modifier.padding(top = 5.dp)
                 ) {
                     Text("Calculate")
                 }

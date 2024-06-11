@@ -5,5 +5,5 @@ data class NetworkInformation(
     val broadcastAddress: IpAddress,
     val firstUsableAddress: IpAddress,
     val lastUsableAddress: IpAddress,
-    val numberOfHosts: Int
+    val numberOfHosts: Long
 )
