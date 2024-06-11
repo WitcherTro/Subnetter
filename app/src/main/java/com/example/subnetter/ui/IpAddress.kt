@@ -71,7 +71,7 @@ fun IpAddressOutput(
                     modifier = Modifier.width(65.dp)
                         .height(32.dp)
                         .padding(7.dp),
-                    textStyle = TextStyle(textAlign = TextAlign.Center)
+                    textStyle = TextStyle(textAlign = TextAlign.Center, color = Color.White)
                 )
             }
             if (i < value.size - 1) {

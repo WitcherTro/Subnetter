@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -66,7 +67,7 @@ fun CalculatorScreen() {
 
     // Mutable state for the CIDR notation
     var isCIDR by remember { mutableStateOf(false) }
-    var cidrValue by remember { mutableStateOf(0f) }
+    var cidrValue by remember { mutableFloatStateOf(0f) }
 
     SubnetterTheme {
         Surface(
@@ -85,10 +86,10 @@ fun CalculatorScreen() {
                     IpAddressInput(
                         modifier = Modifier.padding(vertical = 5.dp)
                     ) { octets ->
-                        if (octets.all { it.toIntOrNull() != null }) {
-                            ipAddress = IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
+                        ipAddress = if (octets.all { it.toIntOrNull() != null }) {
+                            IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
                         } else {
-                            ipAddress = null
+                            null
                         }
                     }
                 }
@@ -119,10 +120,10 @@ fun CalculatorScreen() {
                         IpAddressInput(
                             modifier = Modifier.padding(vertical = 5.dp)
                         ) { octets ->
-                            if (octets.all { it.toIntOrNull() != null }) {
-                                subnetMask = IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
+                            subnetMask = if (octets.all { it.toIntOrNull() != null }) {
+                                IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
                             } else {
-                                subnetMask = null
+                                null
                             }
                         }
                     }
@@ -200,6 +201,7 @@ fun CalculatorScreen() {
                             snackbarVisible = true
                         }
                     },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Blue),
                     modifier = Modifier.padding(top = 5.dp)
                 ) {
                     Text(stringResource(R.string.calculate))
