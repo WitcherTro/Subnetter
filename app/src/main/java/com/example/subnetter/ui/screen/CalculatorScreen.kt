@@ -4,9 +4,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -43,8 +48,8 @@ import com.example.subnetter.util.isValidSubnetMask
 @Composable
 fun CalculatorScreen() {
     // Mutable state for the IP address and subnet mask
-    var ipAddress by remember { mutableStateOf<IpAddress?>(null) }
-    var subnetMask by remember { mutableStateOf<IpAddress?>(null) }
+    var ipAddress by remember { mutableStateOf(listOf("", "", "", "")) }
+    var subnetMask by remember { mutableStateOf(listOf("", "", "", "")) }
 
     // Mutable state for the subnet information
     var subnetInfo by remember { mutableStateOf(NetworkInformation(
@@ -69,6 +74,12 @@ fun CalculatorScreen() {
     var isCIDR by remember { mutableStateOf(false) }
     var cidrValue by remember { mutableFloatStateOf(0f) }
 
+    // Scroll state for the column
+    val scrollState = rememberScrollState()
+
+    val invalidIpOrSubnetMessage = stringResource(R.string.invalid_ip_address_or_subnet_mask)
+
+
     SubnetterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -76,7 +87,9 @@ fun CalculatorScreen() {
         ) {
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(1.dp),
+                .padding(1.dp)
+                .verticalScroll(scrollState)
+                .imePadding(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -85,14 +98,8 @@ fun CalculatorScreen() {
                     Text(stringResource(R.string.ip_address))
                     IpAddressInput(
                         modifier = Modifier.padding(vertical = 5.dp),
-                        value = ipAddress?.toList() ?: listOf("", "", "", ""),
-                        onValueChange = { octets ->
-                            ipAddress = if (octets.all { it.toIntOrNull() != null }) {
-                                IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
-                            } else {
-                                null
-                            }
-                        }
+                        value = ipAddress.toList(),
+                        onValueChange = { ipAddress = it }
                     )
                 }
                 // Subnet Mask Input
@@ -121,14 +128,8 @@ fun CalculatorScreen() {
                         Text(stringResource(R.string.subnet_mask))
                         IpAddressInput(
                             modifier = Modifier.padding(vertical = 5.dp),
-                            value = subnetMask?.toList() ?: listOf("", "", "", ""),
-                            onValueChange = { octets ->
-                                subnetMask = if (octets.all { it.toIntOrNull() != null }) {
-                                    IpAddress(octets[0].toInt(), octets[1].toInt(), octets[2].toInt(), octets[3].toInt())
-                                } else {
-                                    null
-                                }
-                            }
+                            value = subnetMask.toList(),
+                            onValueChange = { subnetMask = it }
                         )
                     }
                 }
@@ -201,7 +202,7 @@ fun CalculatorScreen() {
                         if (result != null) {
                             subnetInfo = result
                         } else {
-                            snackbarMessage = R.string.invalid_ip_address_or_subnet_mask.toString()
+                            snackbarMessage = invalidIpOrSubnetMessage
                             snackbarVisible = true
                         }
                     },
@@ -222,6 +223,7 @@ fun CalculatorScreen() {
                         Text(snackbarMessage)
                     }
                 }
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }

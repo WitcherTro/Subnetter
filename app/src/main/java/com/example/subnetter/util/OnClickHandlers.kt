@@ -6,28 +6,35 @@ import com.example.subnetter.model.IpResult
 import com.example.subnetter.model.NetworkInformation
 import com.example.subnetter.model.SubnetData
 
+
 fun handleCalculateClick(
-    ipAddress: IpAddress?,
-    subnetMask: IpAddress?,
+    ipAddress: List<String>?,
+    subnetMask: List<String>?,
     isCIDR: Boolean,
     cidrValue: Float,
-    isValidIpAddress: (IpAddress) -> Boolean,
-    isValidSubnetMask: (IpAddress) -> Boolean,
+    isValidIpAddress: (List<String>) -> Boolean,
+    isValidSubnetMask: (List<String>) -> Boolean,
     calculateSubnet: (IpAddress, IpAddress) -> NetworkInformation
 ): NetworkInformation? {
     // Check if the IP address is not null
-    if (ipAddress != null) {
+    if (ipAddress != null && ipAddress.size == 4) {
         // Validate the IP address
         if (isValidIpAddress(ipAddress)) {
-            var mask: IpAddress
+            val mask: IpAddress
             if (isCIDR) {
                 // Calculate the subnet mask from the CIDR value
                 mask = SubnetData.fromCidrToIp(cidrValue.toInt())
                 // Calculate the subnet information and return it
-                return calculateSubnet(ipAddress, mask)
-            } else if (subnetMask != null && isValidSubnetMask(subnetMask)) {
+                return calculateSubnet(
+                    IpAddress(ipAddress[0].toInt(), ipAddress[1].toInt(), ipAddress[2].toInt(), ipAddress[3].toInt()),
+                    mask
+                )
+            } else if (subnetMask != null && subnetMask.size == 4 && isValidSubnetMask(subnetMask)) {
                 // Calculate the subnet information and return it
-                return calculateSubnet(ipAddress, subnetMask)
+                return calculateSubnet(
+                    IpAddress(ipAddress[0].toInt(), ipAddress[1].toInt(), ipAddress[2].toInt(), ipAddress[3].toInt()),
+                    IpAddress(subnetMask[0].toInt(), subnetMask[1].toInt(), subnetMask[2].toInt(), subnetMask[3].toInt())
+                )
             }
         }
     }
@@ -70,7 +77,6 @@ fun handleSolveClick(networkInfo: NetworkInformation): Pair<List<List<String>>, 
 fun handleGenerateNewIpClick(): IpResult {
     val ipAddress = generateRandomIpAddress()
     val subnetMask = generateRandomSubnetMask()
-    val networkInfo = calculateSubnet(ipAddress, subnetMask)
 
     val networkInput = listOf("", "", "", "")
     val broadcastInput = listOf("", "", "", "")

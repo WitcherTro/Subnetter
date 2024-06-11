@@ -4,9 +4,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +57,8 @@ fun TrainingScreen() {
     // Network information
     var networkInfo by remember { mutableStateOf(calculateSubnet(ipAddress, subnetMask)) }
 
+    val scrollState = rememberScrollState()
+
     SubnetterTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -60,7 +67,9 @@ fun TrainingScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(1.dp),
+                    .padding(1.dp)
+                    .verticalScroll(scrollState)
+                    .imePadding(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -174,6 +183,7 @@ fun TrainingScreen() {
                         Text("Generate New IP")
                     }
                 }
+                Spacer(modifier =  Modifier.height(48.dp))
             }
         }
     }
