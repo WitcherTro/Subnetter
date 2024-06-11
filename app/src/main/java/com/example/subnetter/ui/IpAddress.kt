@@ -22,7 +22,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-
+/**
+ * Composable function that displays an IP address input field.
+ *
+ * The input field consists of four octets, each of which can be edited independently.
+ * Each octet must be a number between 0 and 255.
+ * The octets are separated by a dot.
+ *
+ * @param modifier The modifier to be applied to the input field.
+ * @param value The current value of the IP address.
+ * @param onValueChange The function to be called when the value of the IP address changes.
+ */
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun IpAddressInput(
@@ -57,7 +67,16 @@ fun IpAddressInput(
         }
     }
 }
-
+/**
+ * Composable function that displays an IP address output field.
+ *
+ * The output field consists of four octets, each of which is displayed independently.
+ * The octets are separated by a dot.
+ *
+ * @param modifier The modifier to be applied to the output field.
+ * @param value The current value of the IP address.
+ * @param backgroundColor The background color of the output field.
+ */
 @Composable
 fun IpAddressOutput(
     modifier: Modifier = Modifier,

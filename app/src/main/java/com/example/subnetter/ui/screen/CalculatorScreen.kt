@@ -46,6 +46,12 @@ import com.example.subnetter.util.handleCalculateClick
 import com.example.subnetter.util.isValidIpAddress
 import com.example.subnetter.util.isValidSubnetMask
 
+/**
+ * CalculatorScreen is a Composable function that provides the UI for the subnet calculator.
+ * It includes input fields for the IP address and subnet mask, output fields for the network address,
+ * broadcast address, first usable address, and last usable address, and buttons for calculating the subnet information,
+ * switching between decimal and CIDR notation for the subnet mask, and dismissing the Snackbar.
+ */
 @Composable
 fun CalculatorScreen() {
     // Mutable state for the IP address and subnet mask

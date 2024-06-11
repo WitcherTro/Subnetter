@@ -22,6 +22,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,6 +45,12 @@ import com.example.subnetter.util.handleSolveClick
 import com.example.subnetter.util.handleValidateCidrClick
 import com.example.subnetter.util.handleValidateClick
 
+/**
+ * TrainingScreen is a Composable function that represents the main screen of the application.
+ * It contains the UI elements for the IP address and subnet mask, as well as the input fields for the network, broadcast, first usable, and last usable IP addresses.
+ * It also contains the buttons for validating, solving, and generating a new IP address.
+ * The state of the UI elements and the logic for the buttons are managed using mutable state variables and helper functions from the util package.
+ */
 @Composable
 fun TrainingScreen() {
     // Mutable state for the IP address and subnet mask
@@ -52,7 +59,7 @@ fun TrainingScreen() {
 
     // Mutable state for the switch state and CIDR value
     var isCustomMask by remember { mutableStateOf(false) }
-    var cidrValue by remember { mutableStateOf(24f) }
+    var cidrValue by remember { mutableFloatStateOf(24f) }
 
     // Mutable state for the user's input
     var networkInput by remember { mutableStateOf(listOf("", "", "", "")) }
@@ -69,6 +76,7 @@ fun TrainingScreen() {
     // Network information
     var networkInfo by remember { mutableStateOf(calculateSubnet(ipAddress, subnetMask)) }
 
+    // Scroll state
     val scrollState = rememberScrollState()
 
     SubnetterTheme {
@@ -182,7 +190,6 @@ fun TrainingScreen() {
                     )
                 }
                 // Validate, Solve and Generate New IP Buttons
-                // Validate, Solve and Generate New IP Buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
@@ -242,11 +249,9 @@ fun TrainingScreen() {
                         firstUsableBorderColor = result.borderColors[2]
                         lastUsableBorderColor = result.borderColors[3]
 
-                        // Update the IP address and subnet mask with the new values
                         ipAddress = result.ipAddress
                         subnetMask = result.subnetMask
 
-                        // Calculate the new network information
                         networkInfo = calculateSubnet(ipAddress, subnetMask)
                     }) {
                         Text("Generate New IP")

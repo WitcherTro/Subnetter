@@ -21,6 +21,12 @@ import com.example.subnetter.R
 import com.example.subnetter.model.SubnetData
 import com.example.subnetter.ui.theme.SubnetterTheme
 
+/**
+ * Composable function that displays a table of subnet data.
+ *
+ * The table includes columns for CIDR, subnet mask, and usable hosts.
+ * Each row in the table represents a different subnet.
+ */
 @Composable
 fun SubnetTable() {
     val data = generateSubnetDataList()
@@ -60,6 +66,11 @@ fun SubnetTable() {
     }
 }
 
+/**
+ * Composable function that displays the Table screen.
+ *
+ * The screen includes a scrollable table of subnet data.
+ */
 @Composable
 fun TableScreen() {
     val scrollState = rememberScrollState()
@@ -76,6 +87,11 @@ fun TableScreen() {
     }
 }
 
+/**
+ * Generates a list of SubnetData objects for CIDR values from 0 to 30.
+ *
+ * @return A list of SubnetData objects.
+ */
 fun generateSubnetDataList(): List<SubnetData> {
     return (0..30).mapNotNull { cidr ->
         SubnetData.from(cidr)

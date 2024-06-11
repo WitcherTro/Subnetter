@@ -6,7 +6,19 @@ import com.example.subnetter.model.IpResult
 import com.example.subnetter.model.NetworkInformation
 import com.example.subnetter.model.SubnetData
 
-
+/**
+ * Handles the click event for the calculate button.
+ * Validates the IP address and subnet mask, then calculates the subnet information.
+ *
+ * @param ipAddress The IP address as a list of strings.
+ * @param subnetMask The subnet mask as a list of strings.
+ * @param isCIDR A boolean indicating whether the subnet mask is in CIDR notation.
+ * @param cidrValue The CIDR value as a float.
+ * @param isValidIpAddress A function that validates the IP address.
+ * @param isValidSubnetMask A function that validates the subnet mask.
+ * @param calculateSubnet A function that calculates the subnet information.
+ * @return The calculated subnet information, or null if the IP address or subnet mask is invalid.
+ */
 fun handleCalculateClick(
     ipAddress: List<String>?,
     subnetMask: List<String>?,
@@ -42,6 +54,17 @@ fun handleCalculateClick(
     return null
 }
 
+/**
+ * Handles the click event for the validate button.
+ * Validates the network, broadcast, first usable, and last usable IP addresses.
+ *
+ * @param networkInput The network IP address as a list of strings.
+ * @param broadcastInput The broadcast IP address as a list of strings.
+ * @param firstUsableInput The first usable IP address as a list of strings.
+ * @param lastUsableInput The last usable IP address as a list of strings.
+ * @param networkInfo The network information.
+ * @return A list of colors representing the validation status of each IP address.
+ */
 fun handleValidateClick(
     networkInput: List<String>,
     broadcastInput: List<String>,
@@ -57,6 +80,13 @@ fun handleValidateClick(
     return listOf(networkBorderColor, broadcastBorderColor, firstUsableBorderColor, lastUsableBorderColor)
 }
 
+/**
+ * Handles the click event for the solve button.
+ * Solves for the network, broadcast, first usable, and last usable IP addresses.
+ *
+ * @param networkInfo The network information.
+ * @return A pair of lists. The first list contains the solved IP addresses. The second list contains the validation status of each IP address.
+ */
 fun handleSolveClick(networkInfo: NetworkInformation): Pair<List<List<String>>, List<Color>> {
     val networkInput = networkInfo.networkAddress.toList()
     val broadcastInput = networkInfo.broadcastAddress.toList()
@@ -74,6 +104,12 @@ fun handleSolveClick(networkInfo: NetworkInformation): Pair<List<List<String>>, 
     )
 }
 
+/**
+ * Handles the click event for the generate new IP button.
+ * Generates a new IP address and subnet mask.
+ *
+ * @return An IpResult object containing the new IP address and subnet mask, and the initial values for the network, broadcast, first usable, and last usable IP addresses.
+ */
 fun handleGenerateNewIpClick(): IpResult {
     val ipAddress = generateRandomIpAddress()
     val subnetMask = generateRandomSubnetMask()
@@ -96,6 +132,17 @@ fun handleGenerateNewIpClick(): IpResult {
     )
 }
 
+/**
+ * Handles the click event for the validate button when the subnet mask is in CIDR notation.
+ * Validates the network, broadcast, first usable, and last usable IP addresses.
+ *
+ * @param networkInput The network IP address as a list of strings.
+ * @param broadcastInput The broadcast IP address as a list of strings.
+ * @param firstUsableInput The first usable IP address as a list of strings.
+ * @param lastUsableInput The last usable IP address as a list of strings.
+ * @param networkInformation The network information.
+ * @return A list of colors representing the validation status of each IP address.
+ */
 fun handleValidateCidrClick(
     networkInput: List<String>,
     broadcastInput: List<String>,
@@ -110,6 +157,13 @@ fun handleValidateCidrClick(
     return listOf(networkBorderColor, broadcastBorderColor, firstUsableBorderColor, lastUsableBorderColor)
 }
 
+/**
+ * Handles the click event for the solve button when the subnet mask is in CIDR notation.
+ * Solves for the network, broadcast, first usable, and last usable IP addresses.
+ *
+ * @param networkInformation The network information.
+ * @return A pair of lists. The first list contains the solved IP addresses. The second list contains the validation status of each IP address.
+ */
 fun handleSolveCidrClick(
     networkInformation: NetworkInformation): Pair<List<List<String>>, List<Color>> {
     val networkInput = networkInformation.networkAddress.toList()

@@ -20,7 +20,12 @@ import com.example.subnetter.ui.screen.Screens
 import com.example.subnetter.ui.screen.TableScreen
 import com.example.subnetter.ui.screen.TrainingScreen
 
-
+/**
+ * Composable function that displays a bottom navigation bar.
+ *
+ * The navigation bar includes items for the Calculator, Training, and Table screens.
+ * When an item is selected, the corresponding screen is displayed.
+ */
 @Composable
 fun BottomNavigationBar() {
 
