@@ -41,7 +41,7 @@ fun handleCalculateClick(
                     IpAddress(ipAddress[0].toInt(), ipAddress[1].toInt(), ipAddress[2].toInt(), ipAddress[3].toInt()),
                     mask
                 )
-            } else if (subnetMask.size == 4 && isValidSubnetMask(subnetMask)) {
+            } else if (subnetMask.all { it.isNotEmpty() } && subnetMask.size == 4 && isValidSubnetMask(subnetMask)) {
                 // Calculate the subnet information and return it
                 return calculateSubnet(
                     IpAddress(ipAddress[0].toInt(), ipAddress[1].toInt(), ipAddress[2].toInt(), ipAddress[3].toInt()),
